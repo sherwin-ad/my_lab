@@ -1,0 +1,27 @@
+version: '3.3'
+services:
+  php-apache-environment:
+    container_name: php-apache
+    build:
+        context: ./php
+        dockerfile: Dockerfile
+    volumes:
+        - ./php/src:/var/www/html/
+        - ./apache2/config:/etc/apache2/sites-available
+    ports:
+        - 80:80
+
+  db:
+    container_name: db
+    image: mysql:latest
+    restart: always
+    environment:
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        MYSQL_DATABASE: ${MY_DATABASE}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+        - ./mysql/datadir:/var/lib/mysql
+#      - ./mysql/config:/etc/mysql/conf.d
+    ports:
+        - "3306:3306"      
